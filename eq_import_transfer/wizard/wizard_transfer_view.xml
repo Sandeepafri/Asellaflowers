@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="wizard_transfer_form_view" model="ir.ui.view">
+            <field name="name">wizard.transfer.form.view</field>
+            <field name="model">wizard.transfer</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="name" invisible="1"/>
+                    <group col="4">
+                        <field name="company_id" required="1" groups="base.group_multi_company"
+                               options="{'no_open': True, 'no_create': True, 'no_create_edit': True}" />
+                        <field name="data" filename="name"/>
+                    </group>
+                    <group col="4">
+                        <field name="inward_operation_type_id" domain="[('code','=','incoming')]" options="{'no_open': True, 'no_create': True, 'no_create_edit': True}" required="1"/> 
+                        <field name="outward_operation_type_id" domain="[('code','=','outgoing')]" options="{'no_open': True, 'no_create': True, 'no_create_edit': True}" required="1"/>
+                    </group>
+                    <footer>
+                        <button name="import_transfer_record" string="Import" type="object" class="oe_highlight" />
+                        or
+                        <button special="cancel" string="Close" type="object" class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_wizard_transfer">
+            <field name="name">Import Transfer</field>
+            <field name="res_model">wizard.transfer</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_transfer_form_view" />
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="action_wizard_transfer" id="menu_import_transfer"
+                  parent="stock.menu_stock_warehouse_mgmt" sequence="155"/>
+
+    </data>
+</odoo>
